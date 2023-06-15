@@ -18,7 +18,13 @@ function Results({ formData }) {
             {Object.values(metrics).filter(metric => !metric?.hidden).map(metric => (
               <TableRow key={metric.title}>
                 <TableCell sx={{ color: metric.color }}>{metric.title}</TableCell>
-                <TableCell align='right' sx={{ color: metric.color }} key={formData}>{Math.abs(metric.value(formData)) || '-'}</TableCell>
+                <TableCell 
+                  align='right' 
+                  sx={{ color: metric.color }} 
+                  key={formData}
+                >
+                  {Math.abs(metric.value(formData)).toFixed(4) || '-'}
+                  </TableCell>
               </TableRow>
             ))}
         </TableBody>

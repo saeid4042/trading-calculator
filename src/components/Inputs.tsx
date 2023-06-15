@@ -53,7 +53,7 @@ function Inputs({ formData, setFormData }) {
                             type='number'
                             label={inputTitles[i].title} 
                             value={formData[i]} 
-                            onChange={e => setFormData({ [i]: parseInt(e.target.value) || 0 })}  
+                            onChange={e => setFormData({ [i]: parseFloat(e.target.value) || 0 })}  
                         />
                     </motion.div>
                 ))}
