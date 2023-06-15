@@ -4,12 +4,12 @@ export const metrics = {
     margin: {
         color: 'green',
         title: 'Margin',
-        value: (f: formProps) => 0,
+        value: (f: formProps) => (f.entryPrice < f.exitPrice) ? ((f.asset * f.risk * f.stopLoss) / (( f.entryPrice - f.stopLoss ) * f.lev)) : ((f.asset * f.risk * f.entryPrice) / (( f.stopLoss - f.entryPrice ) * f.lev)),
     },
     liq: {
         color: 'red',
         title: 'Liquidity',
-        value: (f: formProps) => 0,
+        value: (f: formProps) => (f.entryPrice < f.exitPrice) ? (f.entryPrice - ((100 / f.lev) / 100) * f.entryPrice) : (f.entryPrice + ((100 / f.lev) / 100) * f.entryPrice),
     },
     RR: {
         color: 'red',
@@ -24,7 +24,6 @@ export const metrics = {
     diff1: {
         color: 'green',
         title: 'Diff',
-        // value: (f: formProps) => (f.entryPrice < f.exitPrice) ? (f.exitPrice - f.entryPrice) : (f.entryPrice - f.stopLoss),
         value: (f: formProps) => f.exitPrice - f.entryPrice,
         hidden: true
     },
