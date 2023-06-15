@@ -1,16 +1,20 @@
 // @ts-nocheck
 import { formProps } from './App';
 export const metrics = {
-    
     margin: {
         color: 'green',
         title: 'Margin',
         value: (f: formProps) => 0,
     },
     liq: {
-        color: 'green',
+        color: 'red',
         title: 'Liquidity',
         value: (f: formProps) => 0,
+    },
+    RR: {
+        color: 'red',
+        title: 'R/R',
+        value: (f: formProps) => metrics.totalLoss.value(f) / metrics.totalProfit.value(f),
     },
     diff: {
         color: 'green',
@@ -41,7 +45,7 @@ export const metrics = {
     lossPercentage: {
         color: 'red',
         title: 'Loss Percentage',
-        value: (f: formProps) => metrics.diff2.value(f) * 100 / f.entryPrice, // check
+        value: (f: formProps) => metrics.diff2.value(f) * 100 / f.entryPrice,
     },
     totalLoss: {
         color: 'red',
@@ -52,7 +56,7 @@ export const metrics = {
     profitPercentage: {
         color: 'green',
         title: 'Profit Percentage',
-        value: (f: formProps) => metrics.diff1.value(f) * 100 / f.entryPrice, // check
+        value: (f: formProps) => metrics.diff1.value(f) * 100 / f.entryPrice,
     },
     totalProfit: {
         color: 'green',
@@ -91,11 +95,6 @@ export const metrics = {
         color: 'green',
         title: 'Total Profit Lev (T)',
         value: (f: formProps) => metrics.totalProfitLev.value(f) * f.dollar,
-    },
-    RR: {
-        color: 'green',
-        title: 'R/R',
-        value: (f: formProps) => metrics.totalLoss.value(f) / metrics.totalProfit.value(f),
     },
 }
 

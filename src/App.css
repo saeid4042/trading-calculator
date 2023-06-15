@@ -16,7 +16,29 @@ html, body {
 
 .App main > * {
   width: 50%;
-  padding: 20px;
+  padding: 0 20px;
+}
+
+.App header span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.App header span > * {
+ margin: 0 3px;
+}
+
+.App .inputsContainer > header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 5px;
+  margin-bottom: 5px;
+}
+
+.App .resultsContainer header {
+  display: flex;
+  align-items: center;
 }
 
 .App .inputs {
@@ -48,4 +70,15 @@ html, body {
     width: 43%;
     margin: 10px;
   }
+}
+
+@media screen and (max-width: 365px) {
+  .App .inputs > * {
+    width: 100%;
+    margin: 10px;
+  }
+}
+
+footer {
+  margin-top: 20px;
 }

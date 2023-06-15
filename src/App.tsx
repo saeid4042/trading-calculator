@@ -1,10 +1,13 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import './App.css';
-import Table from '@mui/material/Table';
-import { TableBody, TableCell, TableRow, TextField, Typography } from '@mui/material';
-import { inputTitles, metrics } from './constants';
+import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import SouthEastIcon from '@mui/icons-material/SouthEast';
+import NorthEastIcon from '@mui/icons-material/NorthEast';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Inputs from './components/Inputs';
+import Results from './components/Results';
 
 export type formProps = {
   amount: number | null;
@@ -18,7 +21,7 @@ export type formProps = {
 }
 
 function App() {
-  const [formData, _setFormData] = useState<formProps>({
+  const initialData = {
     amount: null,
     entryPrice: null,
     exitPrice: null,
@@ -27,13 +30,15 @@ function App() {
     dollar: null,
     asset: null,
     risk: null,
-  })
+  }
+  const [formData, _setFormData] = useState<formProps>(initialData)
   const setFormData = (newData) => _setFormData({ ...formData, ...newData});
   const calculateMode = () => {
-    if (formData.entryPrice > formData.exitPrice) return 'short';
-    if (formData.entryPrice < formData.exitPrice) return 'long';
+    if (formData.entryPrice > formData.exitPrice) return <><p>short</p><SouthEastIcon size="small" /></>;
+    if (formData.entryPrice < formData.exitPrice) return <><p>long</p><NorthEastIcon size="small" /></>;
     return '-';
   }
+
 
   const calculateModeColor = () => {
     if (formData.entryPrice > formData.exitPrice) return 'red';
@@ -50,32 +55,23 @@ function App() {
     },
   });
 
-
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-      <h1>Trade Calculator</h1>
-      <p style={{ color:  calculateModeColor() }}>Position: {calculateMode()}</p>
-      <main>
-        <div className='inputs'>
-          {Object.keys(inputTitles).map(i => (
-            <TextField focused color={inputTitles[i].color} type='number' label={inputTitles[i].title} value={formData[i]} onChange={e => setFormData({ [i]: parseInt(e.target.value) || 0 })}  />
-          ))}
-        </div>
-        <div>
-          <Table>
-            <TableBody>
-                {Object.values(metrics).filter(metric => !metric?.hidden).map(metric => (
-                  <TableRow>
-                    <TableCell sx={{ color: metric.color }}>{metric.title}</TableCell>
-                    <TableCell align='right' sx={{ color: metric.color }} key={formData}>{Math.abs(metric.value(formData)) || '-'}</TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </div>
-      </main>
-    </div>
+        <header>
+          <h1>Trade Calculator</h1>
+          <span style={{ color:  calculateModeColor() }}><p>Position: </p>{calculateMode()}</span>
+        </header>
+        <main>
+          <Inputs formData={formData} setFormData={setFormData} />
+          <Results formData={formData} />
+        </main>
+        <footer>
+          <Button variant='contained' color="error" fullWidth onClick={() => _setFormData(initialData)}>
+            Clear <DeleteIcon size="small" sx={{ ml: '5px' }} />
+          </Button>
+        </footer>
+      </div>
     </ThemeProvider>
   );
 }
