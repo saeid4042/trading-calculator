@@ -132,3 +132,68 @@ export const inputTitles = {
         color: 'secondary',
     },
 }
+
+export const animationVariants = {
+    FADE_FROM_RIGHT: {
+      enter: { opacity: 0, x: 20 },
+      visible: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: -20 },
+    },
+    FADE_FROM_LEFT: {
+      enter: { opacity: 1, x: -20 },
+      visible: { opacity: 1, x: 0 },
+      exit: { opacity: 1, x: 20 },
+    },
+    FADE_FROM_BOTTOM: {
+      enter: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -20 },
+    },
+    FADE_FROM_TOP: {
+      enter: { opacity: 0, y: -20 },
+      visible: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: 20 },
+    },
+    FADE: {
+      enter: { opacity: 0 },
+      visible: { opacity: 1 },
+      exit: { opacity: 0 },
+    },
+    ROTATE: {
+      enter: { rotate: 180 },
+      visible: { rotate: 0 },
+      exit: { rotate: -180 },
+    },
+    ROTATE_X: {
+      enter: { rotateX: 90 },
+      visible: { rotateX: 0 },
+      exit: { rotateX: -90 },
+    },
+    ZOOM: {
+      enter: { scale: 0 },
+      visible: { scale: 1 },
+      exit: { scale: 0 },
+    },
+  };
+  
+export const getAnimationProps = (
+    variant: 'FADE_FROM_LEFT' | 'FADE_FROM_RIGHT' | 'FADE' | 'FADE_FROM_TOP' | 'FADE_FROM_BOTTOM' | 'ROTATE' | 'ZOOM' | 'ROTATE_X',
+    delay?: number,
+    duration?: number,
+) => ({
+    ...(variant === 'FADE_FROM_LEFT' && { variants: animationVariants.FADE_FROM_LEFT }),
+    ...(variant === 'FADE_FROM_RIGHT' && { variants: animationVariants.FADE_FROM_RIGHT }),
+    ...(variant === 'FADE_FROM_TOP' && { variants: animationVariants.FADE_FROM_TOP }),
+    ...(variant === 'FADE_FROM_BOTTOM' && { variants: animationVariants.FADE_FROM_BOTTOM }),
+    ...(variant === 'FADE' && { variants: animationVariants.FADE }),
+    ...(variant === 'ROTATE' && { variants: animationVariants.ROTATE }),
+    ...(variant === 'ZOOM' && { variants: animationVariants.ZOOM }),
+    ...(variant === 'ROTATE_X' && { variants: animationVariants.ROTATE_X }),
+    initial: 'enter',
+    animate: 'visible',
+    exit: 'exit',
+    transition: {
+        ...(delay && { delay }),
+        ...(duration && { duration }),
+    },
+});

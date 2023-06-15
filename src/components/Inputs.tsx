@@ -1,23 +1,13 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { inputTitles } from '../constants';
+import { inputTitles, getAnimationProps } from '../constants';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { styled } from '@mui/material/styles';
-
-export type formProps = {
-  amount: number | null;
-  entryPrice: number | null;
-  exitPrice: number | null;
-  stopLoss: number | null;
-  lev: number | null;
-  dollar: number | null;
-  asset: number | null;
-  risk: number | null;
-}
+import { motion } from 'framer-motion';
 
 function Inputs({ formData, setFormData }) {
 
@@ -39,7 +29,7 @@ function Inputs({ formData, setFormData }) {
 
 
   return (
-    <div className="inputsContainer">
+    <motion.div {...getAnimationProps('FADE')} className="inputsContainer">
         <header>
             <EditNoteIcon />
                 <h3>Inputs</h3>
@@ -54,12 +44,22 @@ function Inputs({ formData, setFormData }) {
         </header>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div className='inputs'>
-                {Object.keys(inputTitles).map(i => (
-                    <TextField size='small' focused color={inputTitles[i].color} type='number' label={inputTitles[i].title} value={formData[i]} onChange={e => setFormData({ [i]: parseInt(e.target.value) || 0 })}  />
+                {Object.keys(inputTitles).map((i, index) => (
+                    <motion.div key={inputTitles[i].title} {...getAnimationProps('ZOOM', (index + 1) * 0.1)}>
+                        <TextField 
+                            size='small' 
+                            focused 
+                            color={inputTitles[i].color} 
+                            type='number'
+                            label={inputTitles[i].title} 
+                            value={formData[i]} 
+                            onChange={e => setFormData({ [i]: parseInt(e.target.value) || 0 })}  
+                        />
+                    </motion.div>
                 ))}
             </div>
         </Collapse>
-    </div>
+    </motion.div>
   );
 }
 
