@@ -24,11 +24,13 @@ function Results({ formData }) {
                   sx={{ color: metric.color }} 
                   key={formData}
                 >
-                  {separateEvery3digit(
-                    metric.isInteger 
-                      ? Math.round(metric.value(formData)) 
-                      : Math.abs(metric.value(formData)).toFixed(metric.floatingPosition || 4) || '-'
-                  )} {metric.postFix || ''}
+                  {!isNaN(metric.value(formData)) 
+                  ? separateEvery3digit(
+                      metric.isInteger 
+                        ? Math.round(metric.value(formData)) || '-' 
+                        : Math.abs(metric.value(formData))?.toFixed(metric.floatingPosition || 4) || '-'
+                    ) 
+                  : '-'} {metric.postFix || ''}
                   </TableCell>
               </TableRow>
             ))}
