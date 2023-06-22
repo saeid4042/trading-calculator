@@ -2,6 +2,7 @@
 import { formProps } from './App';
 
 const isLong = (f: formProps) => (f.entryPrice < f.exitPrice);
+
 export const metrics = {
     margin: {
         color: 'green',
