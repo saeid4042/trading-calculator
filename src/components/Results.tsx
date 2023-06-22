@@ -5,6 +5,7 @@ import { TableBody, TableCell, TableRow } from '@mui/material';
 import { metrics, getAnimationProps } from '../constants';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import { motion } from 'framer-motion';
+import { separateEvery3digit } from '../utils';
 
 function Results({ formData }) {
   return (
@@ -23,7 +24,11 @@ function Results({ formData }) {
                   sx={{ color: metric.color }} 
                   key={formData}
                 >
-                  {Math.abs(metric.value(formData)).toFixed(4) || '-'}
+                  {separateEvery3digit(
+                    metric.isInteger 
+                      ? Math.round(metric.value(formData)) 
+                      : Math.abs(metric.value(formData)).toFixed(metric.floatingPosition || 4) || '-'
+                  )} {metric.postFix || ''}
                   </TableCell>
               </TableRow>
             ))}

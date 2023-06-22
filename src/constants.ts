@@ -1,25 +1,35 @@
 // @ts-nocheck
 import { formProps } from './App';
+
+const isLong = (f: formProps) => (f.entryPrice < f.exitPrice);
 export const metrics = {
     margin: {
         color: 'green',
         title: 'Margin',
-        value: (f: formProps) => (f.entryPrice < f.exitPrice) ? ((f.asset * f.risk * f.stopLoss) / (( f.entryPrice - f.stopLoss ) * f.lev)) : ((f.asset * f.risk * f.entryPrice) / (( f.stopLoss - f.entryPrice ) * f.lev)),
+        value: (f: formProps) => isLong(f)
+            ? ((f.asset * f.risk * f.stopLoss) / (( f.entryPrice - f.stopLoss ) * f.lev))/100
+            : ((f.asset * f.risk * f.entryPrice) / (( f.stopLoss - f.entryPrice ) * f.lev))/100,
     },
     liq: {
         color: 'red',
         title: 'Liquidity',
-        value: (f: formProps) => (f.entryPrice < f.exitPrice) ? (f.entryPrice - ((100 / f.lev) / 100) * f.entryPrice) : (f.entryPrice + ((100 / f.lev) / 100) * f.entryPrice),
+        value: (f: formProps) => isLong(f)
+            ? (f.entryPrice - ((100 / f.lev) / 100) * f.entryPrice)
+            : (f.entryPrice + ((100 / f.lev) / 100) * f.entryPrice),
     },
     RR: {
+        floatingPosition: 1,
+        postFix: '%',
         color: 'red',
-        title: 'R/R',
-        value: (f: formProps) => metrics.totalLoss.value(f) / metrics.totalProfit.value(f),
+        title: 'R/R %',
+        value: (f: formProps) => metrics.totalProfit.value(f) / metrics.totalLoss.value(f),
     },
     diff: {
         color: 'green',
         title: 'Diff',
-        value: (f: formProps) => (f.entryPrice < f.exitPrice) ? (f.exitPrice - f.entryPrice) : (f.entryPrice - f.stopLoss),
+        value: (f: formProps) => isLong(f) 
+            ? (f.exitPrice - f.entryPrice) 
+            : (f.entryPrice - f.stopLoss),
     },
     diff1: {
         color: 'green',
@@ -42,6 +52,8 @@ export const metrics = {
     },
     
     lossPercentage: {
+        floatingPosition: 1,
+        postFix: '%',
         color: 'red',
         title: 'Loss Percentage',
         value: (f: formProps) => metrics.diff2.value(f) * 100 / f.entryPrice,
@@ -53,6 +65,8 @@ export const metrics = {
         hidden: true
     },
     profitPercentage: {
+        floatingPosition: 1,
+        postFix: '%',
         color: 'green',
         title: 'Profit Percentage',
         value: (f: formProps) => metrics.diff1.value(f) * 100 / f.entryPrice,
@@ -70,6 +84,7 @@ export const metrics = {
         hidden: true,
     },
     totalLossLev: {
+        isInteger: true,
         color: 'red',
         title: 'Total Loss Lev.',
         value: (f: formProps) => metrics.totalLoss.value(f) * f.lev,
@@ -81,16 +96,21 @@ export const metrics = {
         hidden: true,
     },
     totalProfitLev: {
+        isInteger: true,
         color: 'green',
         title: 'Total Profit Lev.',
         value: (f: formProps) => metrics.totalProfit.value(f) * f.lev,
     },
     totalLossLevInToman: {
+        isInteger: true,
+        postFix: 'Toman',
         color: 'red',
         title: 'Total Loss Lev (T)',
         value: (f: formProps) => metrics.totalLossLev.value(f) * f.dollar,
     },
     totalProfitLevInToman: {
+        isInteger: true,
+        postFix: 'Toman',
         color: 'green',
         title: 'Total Profit Lev (T)',
         value: (f: formProps) => metrics.totalProfitLev.value(f) * f.dollar,
@@ -103,7 +123,7 @@ export const inputTitles = {
         color: 'black'
     },
     risk: {
-        title: 'Risk',
+        title: 'Risk %',
         color: 'error',
     },
     amount: {
