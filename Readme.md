@@ -6,7 +6,7 @@ Run this commant on command prompt (terminal)
 npm run start
 ```
 
-your project will be available on `http://localhost:3000/trading-calculator`
+your project will be available on http://localhost:3000/trading-calculator
 
 # Updating Formulas
 
