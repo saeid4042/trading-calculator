@@ -6,14 +6,23 @@ const isLong = (f: formProps) => (f.entryPrice < f.exitPrice);
 export const metrics = {
     margin: {
         color: 'green',
-        title: 'Margin',
+        title: (f: formProps) => 'Margin',
         value: (f: formProps) => isLong(f)
             ? ((f.asset * f.risk * f.stopLoss) / (( f.entryPrice - f.stopLoss ) * f.lev))/100
             : ((f.asset * f.risk * f.entryPrice) / (( f.stopLoss - f.entryPrice ) * f.lev))/100,
     },
+    volume: {
+        color: 'green',
+        title: (f: formProps) => `Volume ${f.lev && `with Lev. = ${f.lev}`}`,
+        value: (f: formProps) => {
+            const a = (f.asset * f.risk) / 100;
+            const b = f.entryPrice - f.stopLoss;
+            return Math.abs((a / b) * f.entryPrice) / f.lev;
+        },
+    },
     liq: {
         color: 'red',
-        title: 'Liquidity',
+        title: (f: formProps) => 'Liquidity',
         value: (f: formProps) => isLong(f)
             ? (f.entryPrice - ((100 / f.lev) / 100) * f.entryPrice)
             : (f.entryPrice + ((100 / f.lev) / 100) * f.entryPrice),
@@ -22,32 +31,32 @@ export const metrics = {
         floatingPosition: 1,
         postFix: '%',
         color: 'red',
-        title: 'R/R %',
+        title: (f: formProps) => 'R/R %',
         value: (f: formProps) => metrics.totalProfit.value(f) / metrics.totalLoss.value(f),
     },
     diff: {
         color: 'green',
-        title: 'Diff',
+        title: (f: formProps) => 'Diff',
         value: (f: formProps) => isLong(f) 
             ? (f.exitPrice - f.entryPrice) 
             : (f.entryPrice - f.stopLoss),
     },
     diff1: {
         color: 'green',
-        title: 'Diff',
+        title: (f: formProps) => 'Diff',
         value: (f: formProps) => f.exitPrice - f.entryPrice,
         hidden: true
     },
     
     diff2: {
         color: 'green',
-        title: 'Diff',
+        title: (f: formProps) => 'Diff',
         value: (f: formProps) => f.entryPrice - f.stopLoss,
         hidden: true
     },
     gross: {
         color: 'green',
-        title: 'Gross',
+        title: (f: formProps) => 'Gross',
         value: (f: formProps) => f.amount * f.lev,
         hidden: true,
     },
@@ -56,12 +65,12 @@ export const metrics = {
         floatingPosition: 1,
         postFix: '%',
         color: 'red',
-        title: 'Loss Percentage',
+        title: (f: formProps) => 'Loss Percentage',
         value: (f: formProps) => metrics.diff2.value(f) * 100 / f.entryPrice,
     },
     totalLoss: {
         color: 'red',
-        title: 'Total Loss',
+        title: (f: formProps) => 'Total Loss',
         value: (f: formProps) => metrics.lossPercentage.value(f) * f.amount / 100,
         hidden: true
     },
@@ -69,51 +78,51 @@ export const metrics = {
         floatingPosition: 1,
         postFix: '%',
         color: 'green',
-        title: 'Profit Percentage',
+        title: (f: formProps) => 'Profit Percentage',
         value: (f: formProps) => metrics.diff1.value(f) * 100 / f.entryPrice,
     },
     totalProfit: {
         color: 'green',
-        title: 'Total Profit',
+        title: (f: formProps) => 'Total Profit',
         value: (f: formProps) => metrics.profitPercentage.value(f) * f.amount / 100,
         hidden: true,
     },
     lossPercentageLev: {
         color: 'red',
-        title: 'Loss Percentage Lev.',
+        title: (f: formProps) => 'Loss Percentage Lev.',
         value: (f: formProps) => metrics.lossPercentage * f.lev,
         hidden: true,
     },
     totalLossLev: {
         isInteger: true,
         color: 'red',
-        title: 'Total Loss Lev.',
+        title: (f: formProps) => 'Total Loss Lev.',
         value: (f: formProps) => metrics.totalLoss.value(f) * f.lev,
     },
     profitPercentageLev: {
         color: 'green',
-        title: 'Profit Percentage Lev.',
+        title: (f: formProps) => 'Profit Percentage Lev.',
         value: (f: formProps) => metrics.profitPercentage * f.lev,
         hidden: true,
     },
     totalProfitLev: {
         isInteger: true,
         color: 'green',
-        title: 'Total Profit Lev.',
+        title: (f: formProps) => 'Total Profit Lev.',
         value: (f: formProps) => metrics.totalProfit.value(f) * f.lev,
     },
     totalLossLevInToman: {
         isInteger: true,
         postFix: 'Toman',
         color: 'red',
-        title: 'Total Loss Lev (T)',
+        title: (f: formProps) => 'Total Loss Lev (T)',
         value: (f: formProps) => metrics.totalLossLev.value(f) * f.dollar,
     },
     totalProfitLevInToman: {
         isInteger: true,
         postFix: 'Toman',
         color: 'green',
-        title: 'Total Profit Lev (T)',
+        title: (f: formProps) => 'Total Profit Lev (T)',
         value: (f: formProps) => metrics.totalProfitLev.value(f) * f.dollar,
     },
 }

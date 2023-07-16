@@ -10,7 +10,7 @@ your project will be available on http://localhost:3000/trading-calculator
 
 # Updating Formulas
 
-in file `src/constants.ts` you can update  the formulas in `metrics` variable
+in file `src/constants.ts` you can update the formulas in `metrics` variable
 
 # Deploy Project
 

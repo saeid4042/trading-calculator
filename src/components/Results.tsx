@@ -17,8 +17,8 @@ function Results({ formData }) {
       <Table>
         <TableBody>
             {Object.values(metrics).filter(metric => !metric?.hidden).map(metric => (
-              <TableRow key={metric.title}>
-                <TableCell sx={{ color: metric.color }}>{metric.title}</TableCell>
+              <TableRow key={metric.title(formData)}>
+                <TableCell sx={{ color: metric.color }}>{metric.title(formData)}</TableCell>
                 <TableCell 
                   align='right' 
                   sx={{ color: metric.color }} 
