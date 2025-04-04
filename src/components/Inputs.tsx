@@ -41,7 +41,7 @@ function Inputs({ formData, setFormData }) {
           <ExpandMoreIcon />
         </ExpandMore>
       </header>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expanded} timeout="auto">
         <div className="inputs">
           {Object.keys(inputTitles).map((i, index) => (
             <motion.div
@@ -74,6 +74,7 @@ function Inputs({ formData, setFormData }) {
                 </FormControl>
               ) : (
                 <TextField
+                  fullWidth
                   size="small"
                   focused
                   color={inputTitles[i].color}
