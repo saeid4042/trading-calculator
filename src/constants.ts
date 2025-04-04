@@ -121,14 +121,14 @@ export const metrics = {
   },
   totalLossLevInToman: {
     isInteger: true,
-    postFix: "Toman",
+    postFix: "T",
     color: "error",
     title: (f: formProps) => "Total Loss Lev (T)",
     value: (f: formProps) => metrics.totalLossLev.value(f) * f.dollar,
   },
   totalProfitLevInToman: {
     isInteger: true,
-    postFix: "Toman",
+    postFix: "T",
     color: "success",
     title: (f: formProps) => "Total Profit Lev (T)",
     value: (f: formProps) => metrics.totalProfitLev.value(f) * f.dollar,
